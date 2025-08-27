@@ -1,11 +1,9 @@
 import { http, HttpResponse } from "msw";
 
 export const handlers = [
-  http.get("https://api.example.com/user", () => {
+  http.post("https://api.mock.com/login", () => {
     return HttpResponse.json({
-      id: "abc-123",
-      firstName: "John",
-      lastName: "Maverick",
+      token: "fake-token",
     });
   }),
 ];
