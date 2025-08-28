@@ -6,7 +6,7 @@ export default async function Home() {
       <div
         style={{
           background: "url(./bg.webp)",
-          height: "50dvh",
+          height: "50vh",
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}
