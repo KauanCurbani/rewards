@@ -11,7 +11,9 @@ export default async function Home() {
           backgroundSize: "cover",
         }}
       />
-      OI
+      <div>
+        
+      </div>
       <div style={{ height: "200dvh" }} />
     </div>
   );

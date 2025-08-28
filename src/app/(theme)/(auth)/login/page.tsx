@@ -62,12 +62,10 @@ export default function Page() {
         <Divider style={{ margin: "16px 0" }} />
       </Box>
 
-      <Typography variant="h5" color="primary">
-        Entrar
+      <Typography variant="h5" color="primary" fontWeight={"bold"}>
+        ENTRAR_
       </Typography>
-      <Typography variant="caption" color="textSecondary">
-        Use suas credenciais para acessar o painel.
-      </Typography>
+      <small style={{ color: "#888" }}>Informe suas credenciais para acessar o painel.</small>
 
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Box marginBottom={2}>
@@ -135,6 +133,18 @@ export default function Page() {
           Entrar
         </Button>
       </form>
+      <Divider style={{ marginBlock: "22px" }} />
+      <Box>
+        <small
+          style={{
+            textAlign: "center",
+            color: "#888",
+          }}
+        >
+          Ao acessar o painel, você concorda com nossos <b>Termos de Serviço</b> e{" "}
+          <b>Política de Privacidade</b>.
+        </small>
+      </Box>
     </Box>
   );
 }

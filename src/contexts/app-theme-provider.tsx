@@ -1,24 +1,8 @@
-"use client";
+"use client"
+import { ThemeProvider } from "@emotion/react";
+import { createTheme } from "@mui/material";
 
-import React, { useEffect } from "react";
-import { Box, createTheme, ThemeProvider } from "@mui/material";
-import LoaderScreen from "@/components/loader-screen";
-
-export default function Layout({ children }: { children: React.ReactNode }) {
-  const [workerReady, setWorkerReady] = React.useState(false);
-
-  useEffect(() => {
-    const f = async () => {
-      const { worker } = await import("@/mocks/browser");
-      await worker.start();
-      setWorkerReady(true);
-    };
-
-    f();
-  }, []);
-
-  if (!workerReady) return <LoaderScreen />;
-
+export default function AppThemeProvider({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
       theme={createTheme({
