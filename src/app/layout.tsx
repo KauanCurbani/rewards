@@ -23,7 +23,7 @@ export default function RootLayout({
   server.listen();
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
         <meta
           name="viewport"
