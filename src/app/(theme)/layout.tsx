@@ -3,6 +3,8 @@
 import React, { useEffect } from "react";
 import { Box, createTheme, ThemeProvider } from "@mui/material";
 import LoaderScreen from "@/components/loader-screen";
+import AppThemeProvider from "@/contexts/app-theme-provider";
+import { NotificationsProvider } from "@toolpad/core";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [workerReady, setWorkerReady] = React.useState(false);
@@ -20,36 +22,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   if (!workerReady) return <LoaderScreen />;
 
   return (
-    <ThemeProvider
-      theme={createTheme({
-        palette: {
-          primary: {
-            main: "#1E7BF4",
-          },
-          secondary: {
-            main: "#dc004e",
-          },
-        },
-        shape: {
-          borderRadius: 8,
-        },
-        typography: {
-          fontFamily: "'DM Sans', 'Helvetica', 'Arial', sans-serif",
-        },
-
-        components: {
-          MuiTextField: {
-            defaultProps: {
-              variant: "outlined",
-              fullWidth: true,
-              size: "small",
-              slotProps: { inputLabel: { shrink: true } },
-            },
-          },
-        },
-      })}
-    >
-      {children}
-    </ThemeProvider>
+    <AppThemeProvider>
+      <NotificationsProvider slotProps={{ snackbar: { autoHideDuration: 3000 } }}>
+        {children}
+      </NotificationsProvider>
+    </AppThemeProvider>
   );
 }

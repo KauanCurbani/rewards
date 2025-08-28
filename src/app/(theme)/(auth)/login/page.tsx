@@ -11,6 +11,7 @@ import { AxiosError } from "axios";
 import Logo from "@/components/logo";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
+import { useNotifications } from "@toolpad/core";
 
 const schema = z.object({
   cpf: z
@@ -28,6 +29,7 @@ type FormData = z.infer<typeof schema>;
 export default function Page() {
   const { login } = useAuth();
   const router = useRouter();
+  const notifications = useNotifications();
 
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm<FormData>({
@@ -43,6 +45,7 @@ export default function Page() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await login(data.cpf, data.password);
+      notifications.show("Autenticado com sucesso!", { severity: "success" });
       router.replace("/");
     } catch (error) {
       if (error instanceof AxiosError) {
