@@ -69,6 +69,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         }}
         // borderLeft={"1px solid #ccc"}
       >
+        <Box
+          style={{
+            background: "url(./bg.webp)",
+            height: "50vh",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            position: "absolute",
+            width: "100%",
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: -1,
+            mask: "linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.0) 70%)"
+          }}
+          display={{ xs: "block", md: "none" }}
+        />
         {children}
       </Box>
     </Box>
