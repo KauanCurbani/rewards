@@ -47,7 +47,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               fontWeight={"bold"}
               textTransform={"uppercase"}
               fontSize={{ md: "2rem", lg: "3rem" }}
-              gradient={`linear-gradient(45deg,#002e,#002a 50%,${palette.primary.main})`}
+              gradient={`linear-gradient(45deg,#002e,#002a 60%,${palette.primary.main})`}
             />
 
             <Typography variant="subtitle1" color="textSecondary">
