@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     f();
   }, []);
 
-  if (!workerReady) return <LoaderScreen />;
+  // if (!workerReady) return <LoaderScreen />;
 
   return (
     <AppThemeProvider>
