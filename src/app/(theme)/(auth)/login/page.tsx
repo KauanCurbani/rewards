@@ -8,6 +8,9 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "@/lib/api";
 import { AxiosError } from "axios";
+import Logo from "@/components/logo";
+import { useAuth } from "@/contexts/auth-context";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   cpf: z
@@ -23,6 +26,9 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export default function Page() {
+  const { login } = useAuth();
+  const router = useRouter();
+
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -36,8 +42,8 @@ export default function Page() {
   const onSubmit = async (data: FormData) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      const response = await api.post("/login", data);
-      console.log(response);
+      await login(data.cpf, data.password);
+      router.replace("/");
     } catch (error) {
       if (error instanceof AxiosError) {
         form.setError("root", { message: error.message });
@@ -48,7 +54,14 @@ export default function Page() {
   };
 
   return (
-    <Box>
+    <Box width={"100%"} maxWidth={500} marginInline={"auto"}>
+      <Box display={{ xs: "block", md: "none" }}>
+        <Box width={40} height={40} marginBottom={4}>
+          <Logo />
+        </Box>
+        <Divider style={{ margin: "16px 0" }} />
+      </Box>
+
       <Typography variant="h5" color="primary">
         Entrar
       </Typography>
@@ -56,7 +69,6 @@ export default function Page() {
         Use suas credenciais para acessar o painel.
       </Typography>
 
-      <Divider style={{ margin: "16px 0" }} />
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Box marginBottom={2}>
           {form.formState.errors.root && (

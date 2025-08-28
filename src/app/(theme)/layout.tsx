@@ -2,33 +2,29 @@
 
 import React, { useEffect } from "react";
 import { Box, createTheme, ThemeProvider } from "@mui/material";
+import LoaderScreen from "@/components/loader-screen";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [workerReady, setWorkerReady] = React.useState(false);
 
   useEffect(() => {
     const f = async () => {
-      if (process.env.NODE_ENV === "development") {
-        // Dynamically import only in the browser
-        const { worker } = await import("@/mocks/browser");
-        await worker.start();
-        setWorkerReady(true);
-      }
+      const { worker } = await import("@/mocks/browser");
+      await worker.start();
+      setWorkerReady(true);
     };
 
     f();
   }, []);
 
-  if (!workerReady) {
-    return <Box>Loading...</Box>;
-  }
+  // if (!workerReady) return <LoaderScreen />;
 
   return (
     <ThemeProvider
       theme={createTheme({
         palette: {
           primary: {
-            main: "#2554b0",
+            main: "#1E7BF4",
           },
           secondary: {
             main: "#dc004e",
@@ -38,7 +34,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           borderRadius: 8,
         },
         typography: {
-          fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+          fontFamily: "'DM Sans', 'Helvetica', 'Arial', sans-serif",
         },
 
         components: {
