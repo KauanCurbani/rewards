@@ -1,9 +1,9 @@
 .header {
-  padding: 8px 16px;
+  padding: 8px 5rem;
   position: fixed;
   width: 100%;
   top: 0;
-  background-color: #ffffffdd;
+  background: linear-gradient(to bottom, #ffffff, #ffffffdd 50%);
   backdrop-filter: blur(20px);
   z-index: 1000;
   display: flex;

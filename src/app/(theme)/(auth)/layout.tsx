@@ -63,7 +63,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         flexDirection={"column"}
         justifyContent={"center"}
         alignItems={{ xs: "center", md: "start" }}
-        padding={8}
+        padding={{
+          xs: "1.5rem",
+          md: "2.5rem",
+        }}
         // borderLeft={"1px solid #ccc"}
       >
         {children}
