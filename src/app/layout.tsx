@@ -20,8 +20,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  server.listen();
-
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
