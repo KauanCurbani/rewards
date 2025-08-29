@@ -1,14 +1,18 @@
 import { Box, Typography } from "@mui/material";
+import Image from "next/image";
 
 export default async function Home() {
   return (
     <div style={{ width: "100vw" }}>
-      <div
+      <Image
+        src="/bg.webp"
+        alt="background"
+        width={1920}
+        height={1080}
         style={{
-          background: "url(./bg.webp)",
+          width: "100%",
           height: "50vh",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
+          objectFit: "cover",
         }}
       />
       <Box
