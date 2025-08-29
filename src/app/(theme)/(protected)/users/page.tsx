@@ -22,7 +22,7 @@ export default async function Home() {
           fontWeight={600}
           fontSize={{ xs: "h6.fontSize", sm: "h5.fontSize", md: "h4.fontSize" }}
         >
-          RECOMPENSAS_
+          USUÁRIOS_
         </Typography>
       </Box>
     </div>
