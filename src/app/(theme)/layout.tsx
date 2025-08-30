@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [workerReady, setWorkerReady] = React.useState(false);
   const f = async () => {
     const { worker } = await import("@/mocks/browser");
-    await worker.start();
+    // await worker.start();
     setWorkerReady(true);
   };
 
