@@ -23,19 +23,27 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  gap: 16px;
+  gap: 2rem;
 }
 
 .header__nav-item {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   text-decoration: none;
   color: inherit;
+  color: #333;
+
+  &:hover {
+    color: #0070f3;
+  }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .header {
     padding: 8px 1.5rem;
+  }
+  .header__nav {
+    display: none;
   }
 }

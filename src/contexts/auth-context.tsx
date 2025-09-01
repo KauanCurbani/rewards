@@ -1,6 +1,6 @@
 "use client";
 
-import { api } from "@/lib/api";
+import { api } from "@/infra/api/lib/api";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface AuthContextData {

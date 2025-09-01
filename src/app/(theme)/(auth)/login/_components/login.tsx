@@ -71,7 +71,7 @@ export default function Login() {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Box marginBlock={2}>
           {form.formState.errors.root && (
-            <Alert variant="outlined" color="error" icon={<Error />}>
+            <Alert variant="standard" color="error" icon={<Error />}>
               <Typography variant="body1">{form.formState.errors.root.message}</Typography>
             </Alert>
           )}
