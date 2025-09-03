@@ -67,19 +67,6 @@ pnpm test
 pnpm test:playwright
 ```
 
-- Subir a app e rodar e2e automaticamente:
-
-```sh
-pnpm test:all
-```
-
 ## Deploy
 
 Deploy usando Docker na VPS, baseado no `Dockerfile` deste repositório. App disponível em: https://plan.curbanii.net/
-
-Exemplo (opcional):
-
-```sh
-docker build -t rewards .
-docker run -p 3000:3000 rewards
-```
