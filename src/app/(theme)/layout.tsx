@@ -8,9 +8,11 @@ import React, { useEffect } from "react";
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [workerReady, setWorkerReady] = React.useState(false);
   const f = async () => {
-    const { worker } = await import("@/mocks/browser");
-    await worker.start();
-    setWorkerReady(true);
+    if (process.env.NODE_ENV === "development") {
+      const { worker } = await import("@/mocks/browser");
+      await worker.start();
+      setWorkerReady(true);
+    }
   };
 
   useEffect(() => {

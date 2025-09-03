@@ -20,6 +20,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  if (process.env.NODE_ENV === "development") {
+    server.listen();
+  }
+
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
