@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Be Sistemas | Recompensas
 
-## Getting Started
+Aplicação Next.js (React) com validações de formulários, rotas protegidas e testes e2e e unitários.
 
-First, run the development server:
+## Links
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Recompensas públicas: https://plan.curbanii.net/public-rewards
+  - Formatação de datas relativas (Intl)
+  - SSR
+  - CSS/MUI
+- Login: https://plan.curbanii.net/login
+  - Teste Playwright
+  - Zod e React Hook Form para validação
+  - MUI
+- Admin: https://plan.curbanii.net/
+  - Rotas protegidas usando React Context
+  - Zod e React Hook Form para validação
+  - Full MUI
+
+## Tecnologias
+
+- Next.js 15, React 19
+- MUI (Material UI)
+- Zod + React Hook Form
+- Axios, date-fns
+- Testes: Playwright (e2e) e Jest/RTL (unitário)
+
+## Arquivos de teste
+
+- Playwright: `./tests/login.spec.ts`
+- Jest: `./src/domain/useCases/rewardUseCase.spec.ts`
+
+## Como rodar
+
+Pré-requisitos: Node 18+ e pnpm.
+
+Instalação de dependências:
+
+```sh
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ambiente de desenvolvimento (http://localhost:3000):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Build de produção e start:
 
-## Learn More
+```sh
+pnpm build
+pnpm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Testes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Unitários (Jest):
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```sh
+pnpm test
+```
 
-## Deploy on Vercel
+- E2E (Playwright UI):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```sh
+pnpm test:playwright
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Subir a app e rodar e2e automaticamente:
+
+```sh
+pnpm test:all
+```
+
+## Deploy
+
+Deploy usando Docker na VPS, baseado no `Dockerfile` deste repositório. App disponível em: https://plan.curbanii.net/
+
+Exemplo (opcional):
+
+```sh
+docker build -t rewards .
+docker run -p 3000:3000 rewards
+```
