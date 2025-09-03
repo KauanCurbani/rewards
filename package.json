@@ -7,7 +7,7 @@
     "build": "next build --turbopack",
     "start": "next start",
     "test:playwright": "playwright test --ui",
-    "test:all": "start-server-and-test dev http://localhost:3000 test:playwright"
+    "test:all": "export NEXT_PUBLIC_NODE_ENV=testing && start-server-and-test dev http://localhost:3000 test:playwright"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
