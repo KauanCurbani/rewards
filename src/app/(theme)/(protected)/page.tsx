@@ -2,48 +2,48 @@
 import { Reward } from "@/domain/entities/reward";
 import { RewardUseCase } from "@/domain/useCases/rewardUseCase";
 import { ApiRewardRepository } from "@/infra/api/repositories/apiRewardRepository";
-import { Search, Star, StarBorderRounded, StarBorderTwoTone } from "@mui/icons-material";
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Chip,
-  Grid,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Typography,
-  Skeleton,
-  Slider,
-  TextField,
-  Divider,
-} from "@mui/material";
+import { RewardFilters } from "@/domain/entities/rewardFilters";
+import { Box, Typography, Stack, Button } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { ca } from "zod/locales";
-
-interface RewardsFilter {
-  searchTerm: string;
-  minPoints: number;
-  maxPoints: number;
-}
+import { useEffect, useState, useMemo } from "react";
+import { RewardsFilter, FilterState } from "./_components/RewardsFilter";
+import { RewardsFilterSkeleton } from "./_components/RewardsFilterSkeleton";
+import { RewardsGrid } from "./_components/RewardsGrid";
 
 export default function Home() {
+  const router = useRouter();
   const useCase = new RewardUseCase(new ApiRewardRepository());
-  const [rewards, setRewards] = useState<Reward[]>([]);
+  const [allRewards, setAllRewards] = useState<Reward[]>([]);
+  const [filteredRewards, setFilteredRewards] = useState<Reward[]>([]);
   const [loading, setLoading] = useState(true);
+  const [uniqueCategories, setUniqueCategories] = useState<string[]>([]);
+  const [maxPoints, setMaxPoints] = useState(50);
+
+  const [filters, setFilters] = useState<RewardFilters>({
+    searchTerm: "",
+    minPoints: 0,
+    maxPoints: 50,
+    category: "all",
+    sortBy: "name-asc",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await useCase.getRewards();
-        setRewards(data);
+        setLoading(true);
+        const rewards = await useCase.getRewards();
+
+        setAllRewards(rewards);
+        setFilteredRewards(rewards);
+
+        const categories = useCase.extractUniqueCategories(rewards);
+        const maxPts = useCase.getMaxPointsFromRewards(rewards);
+
+        setUniqueCategories(categories);
+        setMaxPoints(maxPts);
+        setFilters((prev) => ({ ...prev, maxPoints: maxPts }));
       } catch (error) {
         console.error("Error fetching rewards:", error);
       } finally {
@@ -53,8 +53,25 @@ export default function Home() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (allRewards.length > 0) {
+      const filtered = useCase.applyFiltersToRewards(allRewards, filters);
+      setFilteredRewards(filtered);
+    }
+  }, [filters, allRewards]);
+
+  const handleApplyFilters = (newFilters: FilterState) => {
+    setFilters({
+      searchTerm: newFilters.searchTerm,
+      minPoints: newFilters.minPoints,
+      maxPoints: newFilters.maxPoints,
+      category: newFilters.category,
+      sortBy: newFilters.sortBy as RewardFilters["sortBy"],
+    });
+  };
+
   return (
-    <div style={{}}>
+    <div style={{ overflowX: "hidden" }}>
       <Image
         src="/bg.webp"
         alt="background"
@@ -72,97 +89,42 @@ export default function Home() {
         marginInline={{ md: "auto" }}
         paddingBlock={2}
       >
-        <Typography
-          color="primary"
-          fontWeight={600}
-          fontSize={{ xs: "h6.fontSize", sm: "h5.fontSize", md: "h4.fontSize" }}
-        >
-          RECOMPENSAS_
-        </Typography>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+          <Typography
+            color="primary"
+            fontWeight={600}
+            fontSize={{ xs: "h6.fontSize", sm: "h5.fontSize", md: "h4.fontSize" }}
+          >
+            RECOMPENSAS_
+          </Typography>
 
-        <div style={{ display: "flex" }}>
-          <Box width={250} marginRight={2} display={{ sx: "none", sm: "block" }}>
-            <Typography variant="body2">Pesquisa por texto</Typography>
-            <TextField
-              variant="outlined"
-              size="small"
-              fullWidth
-              slotProps={{
-                input: {
-                  endAdornment: <Search fontSize="small" />,
-                },
-              }}
-            />
-            <Divider sx={{ my: 2 }} />
-            <Typography variant="body2">Pontos</Typography>
-            <Box display="flex" justifyContent="space-between">
-              <Typography variant="caption">Min</Typography>
-              <Typography variant="caption">Máx</Typography>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => router.push("/rewards/new")}
+            sx={{
+              minWidth: { xs: "auto", sm: "200px" },
+              px: { xs: 2, sm: 3 },
+            }}
+          >
+            <Box component="span" sx={{ display: { xs: "none", sm: "inline" } }}>
+              Nova Recompensa
             </Box>
-            <Slider
-              getAriaLabel={() => "points range"}
-              min={0}
-              max={Math.max(...rewards.map((r) => r.points), 50)}
-              defaultValue={[0, Math.max(...rewards.map((r) => r.points), 50)]}
-              onChange={(_, newValue) => {}}
-              valueLabelDisplay="auto"
-              getAriaValueText={() => ""}
+          </Button>
+        </Stack>
+
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ mt: 2 }}>
+          {loading ? (
+            <RewardsFilterSkeleton />
+          ) : (
+            <RewardsFilter
+              maxPoints={maxPoints}
+              categories={uniqueCategories}
+              onApplyFilters={handleApplyFilters}
             />
-            <Divider sx={{ my: 2 }} />
-            <Typography variant="body2">Ordenação</Typography>
-          </Box>
-          <Grid container columns={12} spacing={2} marginY={2} style={{ flex: 1 }}>
-            {loading
-              ? Array.from({ length: 6 }).map((_, idx) => (
-                  <Grid size={{ xs: 12, sm: 6, md: 4 }} key={idx}>
-                    <Card>
-                      <Skeleton variant="rectangular" height={140} />
-                      <CardContent>
-                        <Skeleton variant="text" width="60%" height={32} />
-                        <Skeleton variant="text" width="80%" height={24} />
-                      </CardContent>
-                      <CardActions>
-                        <Skeleton variant="circular" width={24} height={24} />
-                        <Skeleton variant="rectangular" width={60} height={32} />
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                ))
-              : rewards.map((reward) => (
-                  <Grid size={{ xs: 12, sm: 6, md: 4 }} key={reward.id}>
-                    <Card>
-                      <CardActionArea>
-                        <CardMedia
-                          component="img"
-                          height="140"
-                          image={reward.imageUrl}
-                          alt={reward.name}
-                        />
-                        <CardContent>
-                          <Typography gutterBottom variant="h5" component="div" noWrap>
-                            {reward.name}
-                          </Typography>
-                          <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                            {reward.description}
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                      <CardActions>
-                        <Chip
-                          label={`${reward.points} pts`}
-                          icon={<StarBorderTwoTone fontSize={"small"} />}
-                          color="primary"
-                          size="small"
-                        />
-                        <Button size="small" color="primary">
-                          Share
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                ))}
-          </Grid>
-        </div>
+          )}
+          <RewardsGrid rewards={filteredRewards} loading={loading} />
+        </Stack>
       </Box>
     </div>
   );
